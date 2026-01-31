@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine</title>
+  <style>
+    body {
+      background-color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 22px;
+    }
+
+    video {
+      width: 200px;
+      border-radius: 10px;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      font-size: 16px;
+      padding: 8px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .yes {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .no {
+      background-color: #f44336;
+      color: white;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+     <video autoplay loop muted>
+   <source src="cute.mp4.mp4" type="video/mp4">
+
+ 
+  </video>
+
+<div id="app"></div>
+
+<script>
+let step = 1;
+
+const noTexts = [
+  "No",
+  "Are you sure?",
+  "Really sure?",
+  "Think again!",
+  "Last chance!",
+  "Surely not?",
+  "You might regret this!",
+  "Give it another thought!",
+  "Are you absolutely certain?",
+  "This could be a mistake!",
+  "Have a heart!",
+  "Don't be so cold!",
+  "Change of heart?",
+  "Would you reconsider?",
+  "Is that your final answer?"
+];
+
+function render() {
+  let noText = noTexts[step - 1] || "No";
+  let yesSize = 16 + step * 9;
+
+  // STEP 16 = RUNAWAY BUTTON
+if (step === 16) {
+  document.getElementById("app").innerHTML = `
+
+
+    <h1>you have be my Valentine? 💖</h1>
+
+    <div class="buttons">
+      <button id="yesBtn" class="yes"
+        style="font-size:200px; padding:50px 80px;"
+        onclick="yesClicked()">Yes</button>
+
+      <button id="noBtn" class="no"
+        onmouseover="moveNo()"
+        ontouchstart="moveNo()">
+        No
+      </button>
+    </div>
+  `;
+  return;
+}
+
+
+
+  document.getElementById("app").innerHTML = `
+    <video autoplay loop muted>
+      <source src="cute.mp4" type="video/mp4">
+    </video>
+
+    <h1>Will you be my Valentine? 💖</h1>
+
+    <div class="buttons">
+      <button class="yes" style="font-size:${yesSize}px; padding:${yesSize/2}px ${yesSize}px;" onclick="yesClicked()">Yes</button>
+      <button class="no" onclick="noClicked()">${noText}</button>
+    </div>
+  `;
+}
+
+function yesClicked() {
+  // stop any existing video
+  const oldVideo = document.querySelector("video");
+  if (oldVideo) {
+    oldVideo.pause();
+    oldVideo.src = "";
+    oldVideo.load();
+  }
+
+  // show YES screen with smaller video (1/4 screen)
+  document.getElementById("app").innerHTML = `
+    <video autoplay loop muted
+      style="width:50vw; height:50vh; object-fit:cover; border-radius:15px;">
+      <source src="yes.mp4.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <h1>Yayyy!! 💕🥰</h1>
+    <p>You got married 😍</p>
+  `;
+}
+
+
+function noClicked() {
+  if (step < 16) {
+    step++;
+    render();
+  }
+}
+
+function moveNo() {
+  const noBtn = document.getElementById("noBtn");
+
+  const maxX = window.innerWidth - noBtn.offsetWidth;
+  const maxY = window.innerHeight - noBtn.offsetHeight;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+render();
+</script>
+
+</body>
+</html>
